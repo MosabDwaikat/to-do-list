@@ -1,9 +1,11 @@
+import { deleteIcon, completeIcon, editIcon, incompleteIcon } from "./icons.js";
 class Task {
-  constructor(title, description, priority) {
+  constructor(title, description, priority, completed = false) {
     this.id = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
     this.title = title;
     this.description = description;
     this.priority = priority;
+    this.completed = completed;
   }
 }
 
@@ -33,7 +35,6 @@ class TaskList {
     priority.value = "low";
     this.changeTaskPriorityIndicator();
     this.displayTasks();
-    console.log(this.tasks);
   }
   displayTasks() {
     const tasksContainer = document.getElementById("tasks-list");
@@ -47,23 +48,36 @@ class TaskList {
     this.tasks.forEach((task) => {
       const taskItem = document.createElement("div");
       taskItem.classList.add("task-item");
+      taskItem.id = task.id;
+      if (task.completed) taskItem.classList.add("completed");
       taskItem.style.backgroundColor = priorityColors[task.priority] || "white";
 
       taskItem.innerHTML = `
       <div class="task-body">
-      <input type="checkbox" id="compleate" value="${task.compleated}}" />
       <div class="task-info">
       <h3>${task.title}</h3>
       <p>${task.description}</p>
       </div>
       </div>
       <div class="task-btns">
-      <button>d</button>
-      <button>e</button>
+      <button class="task-item-complete-btn" id="task-item-complete-btn">${
+        task.completed ? incompleteIcon() : completeIcon()
+      }</button>
+      <button class="task-item-edit-btn">${editIcon()}</button>
+      <button class="task-item-delete-btn">${deleteIcon()}</button>
       </div>
     `;
 
       tasksContainer.appendChild(taskItem);
+    });
+    this.attachCompleteTaskListeners();
+  }
+  attachCompleteTaskListeners() {
+    const completeButtons = document.querySelectorAll(
+      ".task-item-complete-btn"
+    );
+    completeButtons.forEach((button) => {
+      button.addEventListener("click", (e) => this.completeTask(e));
     });
   }
   changeTaskPriorityIndicator() {
@@ -84,12 +98,18 @@ class TaskList {
         break;
     }
   }
+  completeTask(event) {
+    const taskItem = event.target.closest("button").parentElement.parentElement;
+    const taskIndex = this.tasks.findIndex((task) => task.id === taskItem.id);
+    this.tasks[taskIndex].completed = !this.tasks[taskIndex].completed;
+    this.displayTasks();
+  }
 }
 
 document.addEventListener("DOMContentLoaded", function () {
   const taskList = new TaskList();
-  const btn = document.getElementById("add-task-btn");
-  btn.addEventListener("click", () => taskList.addTask());
+  const addTaskBtn = document.getElementById("add-task-btn");
+  addTaskBtn.addEventListener("click", () => taskList.addTask());
   const prioritySelect = document.getElementById("task-priority");
   prioritySelect.addEventListener("change", () =>
     taskList.changeTaskPriorityIndicator()
