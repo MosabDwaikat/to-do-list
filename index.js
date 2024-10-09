@@ -7,9 +7,11 @@ class Task {
 }
 
 class TaskList {
-  idcount = 0;
   constructor() {
     this.tasks = [];
+  }
+  generateId() {
+    return `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
   }
   addTask() {
     let title = document.getElementById("task-title");
@@ -25,7 +27,7 @@ class TaskList {
       description.classList.remove("input-error");
     }
     if (!title.value || !description.value) return;
-    let id = this.idcount++;
+    let id = this.generateId();
     this.tasks.push(new Task(id, title.value, description.value));
     title.value = "";
     description.value = "";
