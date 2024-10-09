@@ -32,7 +32,39 @@ class TaskList {
     description.value = "";
     priority.value = "low";
     this.changeTaskPriorityIndicator();
+    this.displayTasks();
     console.log(this.tasks);
+  }
+  displayTasks() {
+    const tasksContainer = document.getElementById("tasks-list");
+    tasksContainer.innerHTML = "";
+    const priorityColors = {
+      low: "lightgreen",
+      medium: "yellow",
+      high: "darkred",
+    };
+
+    this.tasks.forEach((task) => {
+      const taskItem = document.createElement("div");
+      taskItem.classList.add("task-item");
+      taskItem.style.backgroundColor = priorityColors[task.priority] || "white";
+
+      taskItem.innerHTML = `
+      <div class="task-body">
+      <input type="checkbox" id="compleate" value="${task.compleated}}" />
+      <div class="task-info">
+      <h3>${task.title}</h3>
+      <p>${task.description}</p>
+      </div>
+      </div>
+      <div class="task-btns">
+      <button>d</button>
+      <button>e</button>
+      </div>
+    `;
+
+      tasksContainer.appendChild(taskItem);
+    });
   }
   changeTaskPriorityIndicator() {
     const selectedPriority = document.getElementById("task-priority").value;
@@ -61,6 +93,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const prioritySelect = document.getElementById("task-priority");
   prioritySelect.addEventListener(
     "change",
-    taskList.changeTaskPriorityIndicator.bind(taskList)
+    taskList.changeTaskPriorityIndicator
   );
 });
