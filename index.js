@@ -89,10 +89,9 @@ class TaskList {
 document.addEventListener("DOMContentLoaded", function () {
   const taskList = new TaskList();
   const btn = document.getElementById("add-task-btn");
-  btn.addEventListener("click", taskList.addTask.bind(taskList));
+  btn.addEventListener("click", () => taskList.addTask());
   const prioritySelect = document.getElementById("task-priority");
-  prioritySelect.addEventListener(
-    "change",
-    taskList.changeTaskPriorityIndicator
+  prioritySelect.addEventListener("change", () =>
+    taskList.changeTaskPriorityIndicator()
   );
 });
