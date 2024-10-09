@@ -59,8 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btn = document.getElementById("add-task-btn");
   btn.addEventListener("click", taskList.addTask.bind(taskList));
   const prioritySelect = document.getElementById("task-priority");
-  prioritySelect.addEventListener(
-    "change",
-    taskList.changeTaskPriorityIndicator.bind(taskList)
+  prioritySelect.addEventListener("change", () =>
+    taskList.changeTaskPriorityIndicator()
   );
 });
