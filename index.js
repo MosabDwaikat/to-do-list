@@ -1,6 +1,6 @@
 class Task {
-  constructor(id, title, description) {
-    this.id = id;
+  constructor(title, description) {
+    this.id = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
     this.title = title;
     this.description = description;
   }
@@ -25,9 +25,7 @@ class TaskList {
       description.classList.remove("input-error");
     }
     if (!title.value || !description.value) return;
-    this.tasks.push(
-      new Task(`${Date.now()}-${Math.floor(Math.random() * 10000)}`, title.value, description.value)
-    );
+    this.tasks.push(new Task(title.value, description.value));
     title.value = "";
     description.value = "";
     console.log(this.tasks);
