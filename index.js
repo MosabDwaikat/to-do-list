@@ -10,12 +10,10 @@ class TaskList {
   constructor() {
     this.tasks = [];
   }
-  generateId() {
-    return `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
-  }
+
   addTask() {
-    let title = document.getElementById("task-title");
-    let description = document.getElementById("task-description");
+    const title = document.getElementById("task-title");
+    const description = document.getElementById("task-description");
     if (!title.value) {
       title.classList.add("input-error");
     } else {
@@ -27,8 +25,9 @@ class TaskList {
       description.classList.remove("input-error");
     }
     if (!title.value || !description.value) return;
-    let id = this.generateId();
-    this.tasks.push(new Task(id, title.value, description.value));
+    this.tasks.push(
+      new Task(`${Date.now()}-${Math.floor(Math.random() * 10000)}`, title.value, description.value)
+    );
     title.value = "";
     description.value = "";
     console.log(this.tasks);
@@ -36,7 +35,7 @@ class TaskList {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  let taskList = new TaskList();
-  let btn = document.getElementById("add-task-btn");
+  const taskList = new TaskList();
+  const btn = document.getElementById("add-task-btn");
   btn.addEventListener("click", taskList.addTask.bind(taskList));
 });
