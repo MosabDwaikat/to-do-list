@@ -87,6 +87,7 @@ class TaskList {
       const deleteButton = document.createElement("button");
       deleteButton.classList.add("task-item-delete-btn");
       deleteButton.innerHTML = deleteIcon();
+      deleteButton.addEventListener("click", () => this.deleteTask(task.id));
 
       taskBtns.appendChild(completeButton);
       taskBtns.appendChild(editButton);
@@ -118,6 +119,11 @@ class TaskList {
   completeTask(id) {
     const taskIndex = this.tasks.findIndex((task) => task.id === id);
     this.tasks[taskIndex].completed = !this.tasks[taskIndex].completed;
+    this.displayTasks();
+  }
+  deleteTask(id) {
+    const taskIndex = this.tasks.findIndex((task) => task.id === id);
+    this.tasks.splice(taskIndex, 1);
     this.displayTasks();
   }
 }
