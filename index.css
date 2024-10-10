@@ -1,5 +1,4 @@
 .main {
-  border: 1px solid;
   max-width: 800px;
   min-height: 600px;
   margin: auto;
@@ -20,6 +19,7 @@
   align-items: center;
   padding: 10px;
   overflow: scroll;
+  box-shadow: 10px 10px 10px #888888;
 }
 .list::-webkit-scrollbar {
   display: none;
@@ -107,7 +107,7 @@
 
 /* ****** */
 .add-task-panel {
-  /* border: 1px solid; */
+  border: 1px solid;
   width: 85%;
   height: 100px;
   display: flex;

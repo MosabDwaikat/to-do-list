@@ -11,7 +11,14 @@ class Task {
 
 class TaskList {
   constructor() {
-    this.tasks = [];
+    this.tasks = this.loadTasksFromLocalStorage() || [];
+    this.displayTasks();
+  }
+  saveTasksToLocalStorage() {
+    localStorage.setItem("tasks", JSON.stringify(this.tasks));
+  }
+  loadTasksFromLocalStorage() {
+    return JSON.parse(localStorage.getItem("tasks"));
   }
 
   addTask() {
@@ -37,6 +44,7 @@ class TaskList {
     this.displayTasks();
   }
   displayTasks() {
+    this.saveTasksToLocalStorage();
     const tasksContainer = document.getElementById("tasks-list");
     tasksContainer.innerHTML = "";
     const priorityColors = {
