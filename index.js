@@ -102,20 +102,18 @@ class TaskList {
   changeTaskPriorityIndicator() {
     const selectedPriority = document.getElementById("task-priority").value;
     const background = document.getElementById("task-priority-panel");
-    switch (selectedPriority) {
-      case "low":
-        background.style.backgroundColor = "lightgreen";
-        break;
-      case "medium":
-        background.style.backgroundColor = "yellow";
-        break;
-      case "high":
-        background.style.backgroundColor = "darkred";
-        break;
-      default:
-        background.style.backgroundColor = "white";
-        break;
-    }
+    const priorityColors = {
+      low: "bg-color-green",
+      medium: "bg-color-yellow",
+      high: "bg-color-red",
+    };
+    const currentColor = Array.from(background.classList).find((className) =>
+      className.startsWith("bg-color-")
+    );
+    background.classList.replace(
+      currentColor,
+      priorityColors[selectedPriority] || "bg-color-white"
+    );
   }
   completeTask(id) {
     const taskIndex = this.tasks.findIndex((task) => task.id === id);

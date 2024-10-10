@@ -39,16 +39,16 @@
   text-decoration: line-through;
   opacity: 0.6;
 }
-.bg-color-green{
+.bg-color-green {
   background-color: lightgreen;
 }
-.bg-color-yellow{
+.bg-color-yellow {
   background-color: yellow;
 }
-.bg-color-red{
+.bg-color-red {
   background-color: darkred;
 }
-.bg-color-white{
+.bg-color-white {
   background-color: white;
 }
 .task-body {
@@ -129,7 +129,6 @@
   justify-content: space-between;
 }
 .task-priority-panel {
-  background-color: lightgreen;
   margin-bottom: 10px;
   display: flex;
   align-items: center;
