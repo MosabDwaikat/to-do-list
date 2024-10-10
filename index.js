@@ -12,7 +12,8 @@ class Task {
 class TaskList {
   constructor() {
     this.tasks = this.loadTasksFromLocalStorage() || [];
-    this.displayTasks();
+    this.filteredTasks = [...this.tasks];
+    this.filterTasks();
   }
   saveTasksToLocalStorage() {
     localStorage.setItem("tasks", JSON.stringify(this.tasks));
@@ -41,12 +42,12 @@ class TaskList {
     description.value = "";
     priority.value = "low";
     this.changeTaskPriorityIndicator();
-    this.displayTasks();
+    this.filterTasks();
   }
   displayTasks() {
     const tasksContainer = document.getElementById("tasks-list");
     tasksContainer.innerHTML = "";
-    this.tasks.forEach((task) => this.renderTask(task));
+    this.filteredTasks.forEach((task) => this.renderTask(task));
     this.saveTasksToLocalStorage();
   }
 
@@ -121,7 +122,7 @@ class TaskList {
     taskItem.appendChild(taskBody);
     taskItem.appendChild(taskBtns);
 
-    const index = Array.from(this.tasks).indexOf(task);
+    const index = Array.from(this.filteredTasks).indexOf(task);
     tasksContainer.insertBefore(taskItem, tasksContainer.children[index]);
   }
 
@@ -144,11 +145,11 @@ class TaskList {
   completeTask(id) {
     const taskIndex = this.tasks.findIndex((task) => task.id === id);
     this.tasks[taskIndex].completed = !this.tasks[taskIndex].completed;
-    this.displayTasks();
+    this.filterTasks();
   }
   deleteTask(id) {
     this.tasks = this.tasks.filter((task) => task.id !== id);
-    this.displayTasks();
+    this.filterTasks();
   }
   editTask(id) {
     const task = this.tasks.find((task) => task.id === id);
@@ -210,6 +211,14 @@ class TaskList {
     taskItem.appendChild(taskBody);
     taskItem.appendChild(taskBtns);
   }
+  filterTasks() {
+    const filter = document.getElementById("filter").value;
+    this.filteredTasks = this.tasks.filter((task) => {
+      if (filter === "all") return true;
+      return task.priority === filter;
+    });
+    this.displayTasks();
+  }
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -220,4 +229,8 @@ document.addEventListener("DOMContentLoaded", function () {
   prioritySelect.addEventListener("change", () =>
     taskList.changeTaskPriorityIndicator()
   );
+  const filterSelect = document.getElementById("filter");
+  filterSelect.addEventListener("change", () => {
+    taskList.filterTasks();
+  });
 });

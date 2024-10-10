@@ -5,7 +5,18 @@
   </head>
   <body>
     <div class="main">
-      <h1>To do List</h1>
+      <div class="header-panel">
+        <h1 class="title">To do List</h1>
+        <div class="filter-panel">
+          <label for="filter" class="filter-label">View:</label>
+          <select id="filter" class="filter">
+            <option value="all">All Tasks</option>
+            <option value="high">High Priority</option>
+            <option value="medium">Medium Priority</option>
+            <option value="low">Low Priority</option>
+          </select>
+        </div>
+      </div>
       <div class="list" id="tasks-list"></div>
 
       <div class="add-task-panel">
