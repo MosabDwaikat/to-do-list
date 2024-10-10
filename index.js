@@ -122,8 +122,7 @@ class TaskList {
     this.displayTasks();
   }
   deleteTask(id) {
-    const taskIndex = this.tasks.findIndex((task) => task.id === id);
-    this.tasks.splice(taskIndex, 1);
+    this.tasks = this.tasks.filter((task) => task.id !== id);
     this.displayTasks();
   }
 }
