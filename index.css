@@ -39,6 +39,18 @@
   text-decoration: line-through;
   opacity: 0.6;
 }
+.bg-color-green{
+  background-color: lightgreen;
+}
+.bg-color-yellow{
+  background-color: yellow;
+}
+.bg-color-red{
+  background-color: darkred;
+}
+.bg-color-white{
+  background-color: white;
+}
 .task-body {
   display: flex;
   align-items: center;

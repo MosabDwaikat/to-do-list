@@ -40,9 +40,9 @@ class TaskList {
     const tasksContainer = document.getElementById("tasks-list");
     tasksContainer.innerHTML = "";
     const priorityColors = {
-      low: "lightgreen",
-      medium: "yellow",
-      high: "darkred",
+      low: "bg-color-green",
+      medium: "bg-color-yellow",
+      high: "bg-color-red",
     };
 
     this.tasks.forEach((task) => {
@@ -50,36 +50,55 @@ class TaskList {
       taskItem.classList.add("task-item");
       taskItem.id = task.id;
       if (task.completed) taskItem.classList.add("completed");
-      taskItem.style.backgroundColor = priorityColors[task.priority] || "white";
+      taskItem.classList.add(priorityColors[task.priority] || "bg-color-white");
 
-      taskItem.innerHTML = `
-      <div class="task-body">
-      <div class="task-info">
-      <h3>${task.title}</h3>
-      <p>${task.description}</p>
-      </div>
-      </div>
-      <div class="task-btns">
-      <button class="task-item-complete-btn" id="task-item-complete-btn">${
-        task.completed ? incompleteIcon() : completeIcon()
-      }</button>
-      <button class="task-item-edit-btn">${editIcon()}</button>
-      <button class="task-item-delete-btn">${deleteIcon()}</button>
-      </div>
-    `;
+      const taskBody = document.createElement("div");
+      taskBody.classList.add("task-body");
+
+      const taskInfo = document.createElement("div");
+      taskInfo.classList.add("task-info");
+
+      const taskTitle = document.createElement("h3");
+      taskTitle.textContent = task.title;
+      taskInfo.appendChild(taskTitle);
+
+      const taskDescription = document.createElement("p");
+      taskDescription.textContent = task.description;
+      taskInfo.appendChild(taskDescription);
+
+      taskBody.appendChild(taskInfo);
+
+      const taskBtns = document.createElement("div");
+      taskBtns.classList.add("task-btns");
+
+      const completeButton = document.createElement("button");
+      completeButton.classList.add("task-item-complete-btn");
+      completeButton.innerHTML = task.completed
+        ? incompleteIcon()
+        : completeIcon();
+      completeButton.addEventListener("click", () =>
+        this.completeTask(task.id)
+      );
+
+      const editButton = document.createElement("button");
+      editButton.classList.add("task-item-edit-btn");
+      editButton.innerHTML = editIcon();
+
+      const deleteButton = document.createElement("button");
+      deleteButton.classList.add("task-item-delete-btn");
+      deleteButton.innerHTML = deleteIcon();
+
+      taskBtns.appendChild(completeButton);
+      taskBtns.appendChild(editButton);
+      taskBtns.appendChild(deleteButton);
+
+      taskItem.appendChild(taskBody);
+      taskItem.appendChild(taskBtns);
 
       tasksContainer.appendChild(taskItem);
     });
-    this.attachCompleteTaskListeners();
   }
-  attachCompleteTaskListeners() {
-    const completeButtons = document.querySelectorAll(
-      ".task-item-complete-btn"
-    );
-    completeButtons.forEach((button) => {
-      button.addEventListener("click", (e) => this.completeTask(e));
-    });
-  }
+
   changeTaskPriorityIndicator() {
     const selectedPriority = document.getElementById("task-priority").value;
     const background = document.getElementById("task-priority-panel");
@@ -98,9 +117,8 @@ class TaskList {
         break;
     }
   }
-  completeTask(event) {
-    const taskItem = event.target.closest("button").parentElement.parentElement;
-    const taskIndex = this.tasks.findIndex((task) => task.id === taskItem.id);
+  completeTask(id) {
+    const taskIndex = this.tasks.findIndex((task) => task.id === id);
     this.tasks[taskIndex].completed = !this.tasks[taskIndex].completed;
     this.displayTasks();
   }
