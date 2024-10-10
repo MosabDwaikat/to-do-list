@@ -44,68 +44,85 @@ class TaskList {
     this.displayTasks();
   }
   displayTasks() {
-    this.saveTasksToLocalStorage();
     const tasksContainer = document.getElementById("tasks-list");
     tasksContainer.innerHTML = "";
+    this.tasks.forEach((task) => this.renderTask(task));
+    this.saveTasksToLocalStorage();
+  }
+
+  renderTask(task) {
+    const tasksContainer = document.getElementById("tasks-list");
     const priorityColors = {
       low: "bg-color-green",
       medium: "bg-color-yellow",
       high: "bg-color-red",
     };
-
-    this.tasks.forEach((task) => {
-      const taskItem = document.createElement("div");
+    let taskItem = document.getElementById(task.id);
+    if (!taskItem) {
+      taskItem = document.createElement("div");
       taskItem.classList.add("task-item");
       taskItem.id = task.id;
-      if (task.completed) taskItem.classList.add("completed");
-      taskItem.classList.add(priorityColors[task.priority] || "bg-color-white");
-
-      const taskBody = document.createElement("div");
-      taskBody.classList.add("task-body");
-
-      const taskInfo = document.createElement("div");
-      taskInfo.classList.add("task-info");
-
-      const taskTitle = document.createElement("h3");
-      taskTitle.textContent = task.title;
-      taskInfo.appendChild(taskTitle);
-
-      const taskDescription = document.createElement("p");
-      taskDescription.textContent = task.description;
-      taskInfo.appendChild(taskDescription);
-
-      taskBody.appendChild(taskInfo);
-
-      const taskBtns = document.createElement("div");
-      taskBtns.classList.add("task-btns");
-
-      const completeButton = document.createElement("button");
-      completeButton.classList.add("task-item-complete-btn");
-      completeButton.innerHTML = task.completed
-        ? incompleteIcon()
-        : completeIcon();
-      completeButton.addEventListener("click", () =>
-        this.completeTask(task.id)
+    }
+    taskItem.innerHTML = "";
+    const currentColor = Array.from(taskItem.classList).find((className) =>
+      className.startsWith("bg-color-")
+    );
+    if (currentColor) {
+      taskItem.classList.replace(
+        currentColor,
+        priorityColors[task.priority] || "bg-color-white"
       );
+    } else {
+      taskItem.classList.add(priorityColors[task.priority] || "bg-color-white");
+    }
+    if (task.completed) taskItem.classList.add("completed");
+    taskItem.classList.add(priorityColors[task.priority] || "bg-color-white");
 
-      const editButton = document.createElement("button");
-      editButton.classList.add("task-item-edit-btn");
-      editButton.innerHTML = editIcon();
+    const taskBody = document.createElement("div");
+    taskBody.classList.add("task-body");
 
-      const deleteButton = document.createElement("button");
-      deleteButton.classList.add("task-item-delete-btn");
-      deleteButton.innerHTML = deleteIcon();
-      deleteButton.addEventListener("click", () => this.deleteTask(task.id));
+    const taskInfo = document.createElement("div");
+    taskInfo.classList.add("task-info");
 
-      taskBtns.appendChild(completeButton);
-      taskBtns.appendChild(editButton);
-      taskBtns.appendChild(deleteButton);
+    const taskTitle = document.createElement("h3");
+    taskTitle.textContent = task.title;
+    taskInfo.appendChild(taskTitle);
 
-      taskItem.appendChild(taskBody);
-      taskItem.appendChild(taskBtns);
+    const taskDescription = document.createElement("p");
+    taskDescription.textContent = task.description;
+    taskInfo.appendChild(taskDescription);
 
-      tasksContainer.appendChild(taskItem);
-    });
+    taskBody.appendChild(taskInfo);
+
+    const taskBtns = document.createElement("div");
+    taskBtns.classList.add("task-btns");
+
+    const completeButton = document.createElement("button");
+    completeButton.classList.add("task-item-complete-btn");
+    completeButton.innerHTML = task.completed
+      ? incompleteIcon()
+      : completeIcon();
+    completeButton.addEventListener("click", () => this.completeTask(task.id));
+
+    const editButton = document.createElement("button");
+    editButton.classList.add("task-item-edit-btn");
+    editButton.innerHTML = editIcon();
+    editButton.addEventListener("click", () => this.editTask(task.id));
+
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("task-item-delete-btn");
+    deleteButton.innerHTML = deleteIcon();
+    deleteButton.addEventListener("click", () => this.deleteTask(task.id));
+
+    taskBtns.appendChild(completeButton);
+    taskBtns.appendChild(editButton);
+    taskBtns.appendChild(deleteButton);
+
+    taskItem.appendChild(taskBody);
+    taskItem.appendChild(taskBtns);
+
+    const index = Array.from(this.tasks).indexOf(task);
+    tasksContainer.insertBefore(taskItem, tasksContainer.children[index]);
   }
 
   changeTaskPriorityIndicator() {
@@ -132,6 +149,66 @@ class TaskList {
   deleteTask(id) {
     this.tasks = this.tasks.filter((task) => task.id !== id);
     this.displayTasks();
+  }
+  editTask(id) {
+    const task = this.tasks.find((task) => task.id === id);
+    const taskItem = document.getElementById(id);
+    taskItem.innerHTML = "";
+
+    const taskBody = document.createElement("div");
+    taskBody.classList.add("task-body");
+
+    const taskInfo = document.createElement("div");
+    taskInfo.classList.add("task-info");
+
+    const editTaskTitle = document.createElement("input");
+    editTaskTitle.classList.add("task-title");
+    editTaskTitle.value = task.title;
+    taskInfo.appendChild(editTaskTitle);
+
+    const editTaskDescription = document.createElement("input");
+    editTaskDescription.classList.add("task-description");
+    editTaskDescription.value = task.description;
+    taskInfo.appendChild(editTaskDescription);
+
+    taskBody.appendChild(taskInfo);
+
+    const taskBtns = document.createElement("div");
+    taskBtns.classList.add("task-btns");
+
+    const editPriority = document.createElement("select");
+    editPriority.classList.add("edit-task-priority");
+    const priorities = ["low", "medium", "high"];
+    priorities.forEach((priority) => {
+      const option = document.createElement("option");
+      option.value = priority;
+      option.text = priority.charAt(0).toUpperCase() + priority.slice(1);
+      if (task.priority === priority) option.selected = true;
+      editPriority.appendChild(option);
+    });
+    taskBtns.appendChild(editPriority);
+
+    const saveEditBtn = document.createElement("button");
+    saveEditBtn.classList.add("task-item-complete-btn");
+    saveEditBtn.innerHTML = completeIcon();
+    saveEditBtn.addEventListener("click", () => {
+      task.title = editTaskTitle.value;
+      task.description = editTaskDescription.value;
+      task.priority = editPriority.value;
+      this.renderTask(task);
+      this.saveTasksToLocalStorage();
+    });
+
+    const cancelEditBtn = document.createElement("button");
+    cancelEditBtn.classList.add("task-item-delete-btn");
+    cancelEditBtn.innerHTML = incompleteIcon();
+    cancelEditBtn.addEventListener("click", () => this.displayTasks());
+
+    taskBtns.appendChild(saveEditBtn);
+    taskBtns.appendChild(cancelEditBtn);
+
+    taskItem.appendChild(taskBody);
+    taskItem.appendChild(taskBtns);
   }
 }
 
