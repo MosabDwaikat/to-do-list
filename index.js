@@ -12,13 +12,13 @@ class Task {
 class TaskList {
   constructor() {
     this.tasks = this.loadTasksFromLocalStorage() || [];
+    this.displayTasks();
   }
   saveTasksToLocalStorage() {
     localStorage.setItem("tasks", JSON.stringify(this.tasks));
   }
   loadTasksFromLocalStorage() {
-    const storedTasks = JSON.parse(localStorage.getItem("tasks"));
-    return storedTasks ? storedTasks : [];
+    return JSON.parse(localStorage.getItem("tasks"));
   }
 
   addTask() {
@@ -41,10 +41,10 @@ class TaskList {
     description.value = "";
     priority.value = "low";
     this.changeTaskPriorityIndicator();
-    this.saveTasksToLocalStorage();
     this.displayTasks();
   }
   displayTasks() {
+    this.saveTasksToLocalStorage();
     const tasksContainer = document.getElementById("tasks-list");
     tasksContainer.innerHTML = "";
     const priorityColors = {
@@ -127,19 +127,16 @@ class TaskList {
   completeTask(id) {
     const taskIndex = this.tasks.findIndex((task) => task.id === id);
     this.tasks[taskIndex].completed = !this.tasks[taskIndex].completed;
-    this.saveTasksToLocalStorage();
     this.displayTasks();
   }
   deleteTask(id) {
     this.tasks = this.tasks.filter((task) => task.id !== id);
-    this.saveTasksToLocalStorage();
     this.displayTasks();
   }
 }
 
 document.addEventListener("DOMContentLoaded", function () {
   const taskList = new TaskList();
-  taskList.displayTasks();
   const addTaskBtn = document.getElementById("add-task-btn");
   addTaskBtn.addEventListener("click", () => taskList.addTask());
   const prioritySelect = document.getElementById("task-priority");
