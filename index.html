@@ -12,7 +12,12 @@
         <button class="add-task-btn" id="add-task-btn">Add</button>
         <div class="add-task-info-panel">
           <div class="add-task-info-header-panel">
-            <input type="text" id="task-title" placeholder="Task title" />
+            <input
+              type="text"
+              class="task-title"
+              id="task-title"
+              placeholder="Task title"
+            />
             <div
               class="task-priority-panel bg-color-green"
               id="task-priority-panel"
@@ -20,7 +25,7 @@
               <label for="task-priority" class="task-priority-label"
                 >Priority:</label
               >
-              <select id="task-priority">
+              <select id="task-priority" class="task-priority">
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>
                 <option value="high">High</option>
@@ -29,6 +34,7 @@
           </div>
           <input
             type="text"
+            class="task-description"
             id="task-description"
             placeholder="Task description"
           />

@@ -91,6 +91,7 @@ class TaskList {
       const editButton = document.createElement("button");
       editButton.classList.add("task-item-edit-btn");
       editButton.innerHTML = editIcon();
+      editButton.addEventListener("click", () => this.editTask(task.id));
 
       const deleteButton = document.createElement("button");
       deleteButton.classList.add("task-item-delete-btn");
@@ -132,6 +133,67 @@ class TaskList {
   deleteTask(id) {
     this.tasks = this.tasks.filter((task) => task.id !== id);
     this.displayTasks();
+  }
+  editTask(id) {
+    const task = this.tasks.find((task) => task.id === id);
+    const taskItem = document.getElementById(id);
+    taskItem.innerHTML = "";
+
+    // ********************************
+    const taskBody = document.createElement("div");
+    taskBody.classList.add("task-body");
+
+    const taskInfo = document.createElement("div");
+    taskInfo.classList.add("task-info");
+
+    const editTaskTitle = document.createElement("input");
+    editTaskTitle.classList.add("task-title");
+    editTaskTitle.value = task.title;
+    taskInfo.appendChild(editTaskTitle);
+
+    const editTaskDescription = document.createElement("input");
+    editTaskDescription.classList.add("task-description");
+    editTaskDescription.value = task.description;
+    taskInfo.appendChild(editTaskDescription);
+
+    taskBody.appendChild(taskInfo);
+
+    const taskBtns = document.createElement("div");
+    taskBtns.classList.add("task-btns");
+
+    const editPriority = document.createElement("select");
+    editPriority.classList.add("edit-task-priority");
+    const priorities = ["low", "medium", "high"];
+    priorities.forEach((priority) => {
+      const option = document.createElement("option");
+      option.value = priority;
+      option.text = priority.charAt(0).toUpperCase() + priority.slice(1);
+      if (task.priority === priority) option.selected = true;
+      editPriority.appendChild(option);
+    });
+    taskBtns.appendChild(editPriority);
+
+    const saveEditBtn = document.createElement("button");
+    saveEditBtn.classList.add("task-item-complete-btn");
+    saveEditBtn.innerHTML = completeIcon();
+    saveEditBtn.addEventListener("click", () => {
+      task.title = editTaskTitle.value;
+      task.description = editTaskDescription.value;
+      task.priority = editPriority.value;
+      this.displayTasks();
+    });
+
+    const cancelEditBtn = document.createElement("button");
+    cancelEditBtn.classList.add("task-item-delete-btn");
+    cancelEditBtn.innerHTML = incompleteIcon();
+    cancelEditBtn.addEventListener("click", () => this.displayTasks());
+
+    taskBtns.appendChild(saveEditBtn);
+    taskBtns.appendChild(cancelEditBtn);
+
+    taskItem.appendChild(taskBody);
+    taskItem.appendChild(taskBtns);
+    // ********************************
   }
 }
 
