@@ -12,8 +12,7 @@ class Task {
 class TaskList {
   constructor() {
     this.tasks = this.loadTasksFromLocalStorage() || [];
-    this.filteredTasks = [...this.tasks];
-    this.filterTasks();
+    this.displayTasks();
   }
   saveTasksToLocalStorage() {
     localStorage.setItem("tasks", JSON.stringify(this.tasks));
@@ -42,12 +41,15 @@ class TaskList {
     description.value = "";
     priority.value = "low";
     this.changeTaskPriorityIndicator();
-    this.filterTasks();
+    this.displayTasks();
   }
   displayTasks() {
     const tasksContainer = document.getElementById("tasks-list");
     tasksContainer.innerHTML = "";
-    this.filteredTasks.forEach((task) => this.renderTask(task));
+    const filter = document.getElementById("filter").value;
+    this.tasks.forEach((task) => {
+      if (filter === "all" || task.priority === filter) this.renderTask(task);
+    });
     this.saveTasksToLocalStorage();
   }
 
@@ -122,7 +124,8 @@ class TaskList {
     taskItem.appendChild(taskBody);
     taskItem.appendChild(taskBtns);
 
-    const index = Array.from(this.filteredTasks).indexOf(task);
+    //still need the index of this task relative to the tasks of the same priority
+    // const index = Array.from(this.tasks).indexOf(task);
     tasksContainer.insertBefore(taskItem, tasksContainer.children[index]);
   }
 
@@ -145,11 +148,11 @@ class TaskList {
   completeTask(id) {
     const taskIndex = this.tasks.findIndex((task) => task.id === id);
     this.tasks[taskIndex].completed = !this.tasks[taskIndex].completed;
-    this.filterTasks();
+    this.displayTasks();
   }
   deleteTask(id) {
     this.tasks = this.tasks.filter((task) => task.id !== id);
-    this.filterTasks();
+    this.displayTasks();
   }
   editTask(id) {
     const task = this.tasks.find((task) => task.id === id);
@@ -211,14 +214,6 @@ class TaskList {
     taskItem.appendChild(taskBody);
     taskItem.appendChild(taskBtns);
   }
-  filterTasks() {
-    const filter = document.getElementById("filter").value;
-    this.filteredTasks = this.tasks.filter((task) => {
-      if (filter === "all") return true;
-      return task.priority === filter;
-    });
-    this.displayTasks();
-  }
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -231,6 +226,6 @@ document.addEventListener("DOMContentLoaded", function () {
   );
   const filterSelect = document.getElementById("filter");
   filterSelect.addEventListener("change", () => {
-    taskList.filterTasks();
+    taskList.displayTasks();
   });
 });
