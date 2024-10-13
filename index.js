@@ -124,9 +124,16 @@ class TaskList {
     taskItem.appendChild(taskBody);
     taskItem.appendChild(taskBtns);
 
-    //still need the index of this task relative to the tasks of the same priority
-    // const index = Array.from(this.tasks).indexOf(task);
-    tasksContainer.insertBefore(taskItem, tasksContainer.children[index]);
+    let inserted = false;
+    for (let child of tasksContainer.children) {
+      if (child.id > taskItem.id) {
+        console.log("Match found!", child);
+        tasksContainer.insertBefore(taskItem, child);
+        inserted = true;
+        break;
+      }
+    }
+    if (!inserted) tasksContainer.appendChild(taskItem);
   }
 
   changeTaskPriorityIndicator() {
