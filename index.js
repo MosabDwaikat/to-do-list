@@ -46,7 +46,10 @@ class TaskList {
   displayTasks() {
     const tasksContainer = document.getElementById("tasks-list");
     tasksContainer.innerHTML = "";
-    this.tasks.forEach((task) => this.renderTask(task));
+    const filter = document.getElementById("filter").value;
+    this.tasks.forEach((task) => {
+      if (filter === "all" || task.priority === filter) this.renderTask(task);
+    });
     this.saveTasksToLocalStorage();
   }
 
@@ -121,8 +124,15 @@ class TaskList {
     taskItem.appendChild(taskBody);
     taskItem.appendChild(taskBtns);
 
-    const index = Array.from(this.tasks).indexOf(task);
-    tasksContainer.insertBefore(taskItem, tasksContainer.children[index]);
+    let inserted = false;
+    for (let child of tasksContainer.children) {
+      if (child.id > taskItem.id) {
+        tasksContainer.insertBefore(taskItem, child);
+        inserted = true;
+        break;
+      }
+    }
+    if (!inserted) tasksContainer.appendChild(taskItem);
   }
 
   changeTaskPriorityIndicator() {
@@ -220,4 +230,8 @@ document.addEventListener("DOMContentLoaded", function () {
   prioritySelect.addEventListener("change", () =>
     taskList.changeTaskPriorityIndicator()
   );
+  const filterSelect = document.getElementById("filter");
+  filterSelect.addEventListener("change", () => {
+    taskList.displayTasks();
+  });
 });
