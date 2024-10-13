@@ -127,7 +127,6 @@ class TaskList {
     let inserted = false;
     for (let child of tasksContainer.children) {
       if (child.id > taskItem.id) {
-        console.log("Match found!", child);
         tasksContainer.insertBefore(taskItem, child);
         inserted = true;
         break;
