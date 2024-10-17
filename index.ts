@@ -1,5 +1,9 @@
 import { deleteIcon, completeIcon, editIcon, incompleteIcon } from "./icons.js";
-type PriorityType = "low" | "medium" | "high";
+enum PriorityType {
+  low = "low",
+  medium = "medium",
+  high = "high",
+}
 
 enum CSSClassName {
   InputError = "input-error",
@@ -92,13 +96,17 @@ class TaskList {
     this.tasks.push(new Task(title.value, description.value, priority.value));
     title.value = "";
     description.value = "";
-    priority.value = "low";
+    priority.value = PriorityType.low;
 
     this.changeTaskPriorityIndicator();
     this.displayTasks();
   }
   isValidPriority(value: string): value is PriorityType {
-    return value === "low" || value === "medium" || value === "high";
+    return (
+      value === PriorityType.low ||
+      value === PriorityType.medium ||
+      value === PriorityType.high
+    );
   }
   changeTaskPriorityIndicator(): void {
     const prioritySelect = document.getElementById(
@@ -129,7 +137,6 @@ class TaskList {
       this.tasks.forEach((task) => {
         if (filterValue === "all" || filterValue === task.priority)
           this.renderTask(task);
-        console.log();
       });
     }
     this.saveTasksToLocalStorage();
@@ -253,7 +260,11 @@ class TaskList {
     const editPriority: HTMLSelectElement = document.createElement("select");
     editPriority.classList.add(CSSClassName.EditTaskPriority);
 
-    const priorities: PriorityType[] = ["low", "medium", "high"];
+    const priorities: PriorityType[] = [
+      PriorityType.low,
+      PriorityType.medium,
+      PriorityType.high,
+    ];
     priorities.forEach((priority) => {
       const option: HTMLOptionElement = document.createElement("option");
       option.value = priority;
