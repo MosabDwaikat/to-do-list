@@ -4,7 +4,7 @@
   "description": "to do list app using typescript",
   "main": "index.js",
   "scripts": {
-    "start": "lite-server",
+    "start": "tsc && lite-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
