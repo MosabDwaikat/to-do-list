@@ -1,6 +1,27 @@
 import { deleteIcon, completeIcon, editIcon, incompleteIcon } from "./icons.js";
 type PriorityType = "low" | "medium" | "high";
 
+enum CSSClassName {
+  InputError = "input-error",
+  TaskItem = "task-item",
+  Completed = "completed",
+  TaskBody = "task-body",
+  TaskInfo = "task-info",
+  TaskBtns = "task-btns",
+  CompleteButton = "task-item-complete-btn",
+  EditButton = "task-item-edit-btn",
+  DeleteButton = "task-item-delete-btn",
+  TaskTitle = "task-title",
+  TaskDescription = "task-description",
+  EditTaskPriority = "edit-task-priority",
+}
+
+const priorityColorClass: Record<PriorityType, string> = {
+  low: "bg-color-green",
+  medium: "bg-color-yellow",
+  high: "bg-color-red",
+};
+
 class Task {
   id: string;
   title: string;
@@ -48,16 +69,16 @@ class TaskList {
     ) as HTMLSelectElement | null;
     if (title) {
       if (!title.value) {
-        title.classList.add("input-error");
+        title.classList.add(CSSClassName.InputError);
       } else {
-        title.classList.remove("input-error");
+        title.classList.remove(CSSClassName.InputError);
       }
     }
     if (description) {
       if (!description.value) {
-        description.classList.add("input-error");
+        description.classList.add(CSSClassName.InputError);
       } else {
-        description.classList.remove("input-error");
+        description.classList.remove(CSSClassName.InputError);
       }
     }
     if (
@@ -68,9 +89,7 @@ class TaskList {
     ) {
       return;
     }
-    this.tasks.push(
-      new Task(title.value, description.value, priority.value as PriorityType)
-    );
+    this.tasks.push(new Task(title.value, description.value, priority.value));
     title.value = "";
     description.value = "";
     priority.value = "low";
@@ -82,61 +101,48 @@ class TaskList {
     return value === "low" || value === "medium" || value === "high";
   }
   changeTaskPriorityIndicator(): void {
-    const priority = document.getElementById(
+    const prioritySelect = document.getElementById(
       "task-priority"
     ) as HTMLSelectElement | null;
-    if (!priority) return;
-    const selectedPriority = priority.value;
+    if (!prioritySelect) return;
+    const priority = prioritySelect.value as PriorityType;
     const background = document.getElementById(
       "task-priority-panel"
     ) as HTMLDivElement | null;
     if (!background) return;
-    const priorityColorClass: Record<PriorityType, string> = {
-      low: "bg-color-green",
-      medium: "bg-color-yellow",
-      high: "bg-color-red",
-    };
+
     const currentColor = Array.from(background.classList).find((className) =>
       className.startsWith("bg-color-")
     );
     if (currentColor) {
-      background.classList.replace(
-        currentColor,
-        priorityColorClass[selectedPriority as PriorityType] || "bg-color-white"
-      );
+      background.classList.replace(currentColor, priorityColorClass[priority]);
     } else {
-      background.classList.add(
-        priorityColorClass[selectedPriority as PriorityType] || "bg-color-white"
-      );
+      background.classList.add(priorityColorClass[priority]);
     }
   }
   displayTasks(): void {
-    const tasksContainer = document.getElementById("tasks-list");
+    const tasksList = document.getElementById("tasks-list");
     const filter = document.getElementById("filter") as HTMLSelectElement;
     const filterValue = filter.value;
-    if (tasksContainer) {
-      tasksContainer.innerHTML = "";
+    if (tasksList) {
+      tasksList.innerHTML = "";
       this.tasks.forEach((task) => {
         if (filterValue === "all" || filterValue === task.priority)
           this.renderTask(task);
+        console.log();
       });
     }
     this.saveTasksToLocalStorage();
   }
   renderTask(task: Task): void {
-    const tasksContainer = document.getElementById(
+    const tasksList = document.getElementById(
       "tasks-list"
     ) as HTMLDivElement | null;
-    if (!tasksContainer) return;
-    const priorityColorClass = {
-      low: "bg-color-green",
-      medium: "bg-color-yellow",
-      high: "bg-color-red",
-    };
+    if (!tasksList) return;
     let taskItem = document.getElementById(task.id) as HTMLDivElement | null;
     if (!taskItem) {
       taskItem = document.createElement("div");
-      taskItem.classList.add("task-item");
+      taskItem.classList.add(CSSClassName.TaskItem);
       taskItem.id = task.id;
     }
     taskItem.innerHTML = "";
@@ -146,22 +152,18 @@ class TaskList {
     if (currentColor) {
       taskItem.classList.replace(
         currentColor,
-        priorityColorClass[task.priority] || "bg-color-white"
+        priorityColorClass[task.priority]
       );
     } else {
-      taskItem.classList.add(
-        priorityColorClass[task.priority] || "bg-color-white"
-      );
+      taskItem.classList.add(priorityColorClass[task.priority]);
     }
-    if (task.completed) taskItem.classList.add("completed");
-
-    // taskItem.classList.add(priorityColorClass[task.priority] || "bg-color-white");
+    if (task.completed) taskItem.classList.add(CSSClassName.Completed);
 
     const taskBody: HTMLDivElement = document.createElement("div");
-    taskBody.classList.add("task-body");
+    taskBody.classList.add(CSSClassName.TaskBody);
 
     const taskInfo: HTMLDivElement = document.createElement("div");
-    taskInfo.classList.add("task-info");
+    taskInfo.classList.add(CSSClassName.TaskInfo);
 
     const taskTitle: HTMLHeadingElement = document.createElement("h3");
     taskTitle.textContent = task.title;
@@ -174,22 +176,22 @@ class TaskList {
     taskBody.appendChild(taskInfo);
 
     const taskBtns: HTMLDivElement = document.createElement("div");
-    taskBtns.classList.add("task-btns");
+    taskBtns.classList.add(CSSClassName.TaskBtns);
 
     const completeButton: HTMLButtonElement = document.createElement("button");
-    completeButton.classList.add("task-item-complete-btn");
+    completeButton.classList.add(CSSClassName.CompleteButton);
     completeButton.innerHTML = task.completed
       ? incompleteIcon()
       : completeIcon();
     completeButton.addEventListener("click", () => this.completeTask(task.id));
 
     const editButton = document.createElement("button");
-    editButton.classList.add("task-item-edit-btn");
+    editButton.classList.add(CSSClassName.EditButton);
     editButton.innerHTML = editIcon();
     editButton.addEventListener("click", () => this.editTask(task.id));
 
     const deleteButton = document.createElement("button");
-    deleteButton.classList.add("task-item-delete-btn");
+    deleteButton.classList.add(CSSClassName.DeleteButton);
     deleteButton.innerHTML = deleteIcon();
     deleteButton.addEventListener("click", () => this.deleteTask(task.id));
 
@@ -201,14 +203,14 @@ class TaskList {
     taskItem.appendChild(taskBtns);
 
     let inserted: boolean = false;
-    for (let child of tasksContainer.children) {
+    for (let child of tasksList.children) {
       if (child.id > taskItem.id) {
-        tasksContainer.insertBefore(taskItem, child);
+        tasksList.insertBefore(taskItem, child);
         inserted = true;
         break;
       }
     }
-    if (!inserted) tasksContainer.appendChild(taskItem);
+    if (!inserted) tasksList.appendChild(taskItem);
   }
   deleteTask(id: string): void {
     this.tasks = this.tasks.filter((task) => task.id !== id);
@@ -227,31 +229,31 @@ class TaskList {
     taskItem.innerHTML = "";
 
     const taskBody: HTMLDivElement = document.createElement("div");
-    taskBody.classList.add("task-body");
+    taskBody.classList.add(CSSClassName.TaskBody);
 
     const taskInfo: HTMLDivElement = document.createElement("div");
-    taskInfo.classList.add("task-info");
+    taskInfo.classList.add(CSSClassName.TaskInfo);
 
     const editTaskTitle: HTMLInputElement = document.createElement("input");
-    editTaskTitle.classList.add("task-title");
+    editTaskTitle.classList.add(CSSClassName.TaskTitle);
     editTaskTitle.value = task.title;
     taskInfo.appendChild(editTaskTitle);
 
     const editTaskDescription: HTMLInputElement =
       document.createElement("input");
-    editTaskDescription.classList.add("task-description");
+    editTaskDescription.classList.add(CSSClassName.TaskDescription);
     editTaskDescription.value = task.description;
     taskInfo.appendChild(editTaskDescription);
 
     taskBody.appendChild(taskInfo);
 
     const taskBtns: HTMLDivElement = document.createElement("div");
-    taskBtns.classList.add("task-btns");
+    taskBtns.classList.add(CSSClassName.TaskBtns);
 
     const editPriority: HTMLSelectElement = document.createElement("select");
-    editPriority.classList.add("edit-task-priority");
+    editPriority.classList.add(CSSClassName.EditTaskPriority);
 
-    const priorities = ["low", "medium", "high"];
+    const priorities: PriorityType[] = ["low", "medium", "high"];
     priorities.forEach((priority) => {
       const option: HTMLOptionElement = document.createElement("option");
       option.value = priority;
@@ -262,7 +264,7 @@ class TaskList {
     taskBtns.appendChild(editPriority);
 
     const saveEditBtn: HTMLButtonElement = document.createElement("button");
-    saveEditBtn.classList.add("task-item-complete-btn");
+    saveEditBtn.classList.add(CSSClassName.CompleteButton);
     saveEditBtn.innerHTML = completeIcon();
     saveEditBtn.addEventListener("click", () => {
       task.title = editTaskTitle.value;
@@ -273,7 +275,7 @@ class TaskList {
     });
 
     const cancelEditBtn: HTMLButtonElement = document.createElement("button");
-    cancelEditBtn.classList.add("task-item-delete-btn");
+    cancelEditBtn.classList.add(CSSClassName.DeleteButton);
     cancelEditBtn.innerHTML = incompleteIcon();
     cancelEditBtn.addEventListener("click", () => this.displayTasks());
 
