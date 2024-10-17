@@ -4,11 +4,15 @@
   "description": "to do list app using typescript",
   "main": "index.js",
   "scripts": {
+    "start": "lite-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "typescript": "^5.6.3"
+  },
+  "devDependencies": {
+    "lite-server": "^2.6.1"
   }
 }
