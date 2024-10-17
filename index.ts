@@ -260,12 +260,7 @@ class TaskList {
     const editPriority: HTMLSelectElement = document.createElement("select");
     editPriority.classList.add(CSSClassName.EditTaskPriority);
 
-    const priorities: PriorityType[] = [
-      PriorityType.low,
-      PriorityType.medium,
-      PriorityType.high,
-    ];
-    priorities.forEach((priority) => {
+    Object.values(PriorityType).forEach((priority) => {
       const option: HTMLOptionElement = document.createElement("option");
       option.value = priority;
       option.text = priority.charAt(0).toUpperCase() + priority.slice(1);

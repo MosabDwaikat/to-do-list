@@ -2,9 +2,11 @@
   "name": "to-do-list",
   "version": "2.0.0",
   "description": "to do list app using typescript",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "tsc && lite-server",
+    "start": "lite-server",
+    "dev": "tsc --watch",
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
