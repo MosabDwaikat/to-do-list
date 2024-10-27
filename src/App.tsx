@@ -19,7 +19,6 @@ function App() {
 
   const addTask = (task: TaskType) => {
     setTasks([...tasks, task]);
-    console.log(tasks);
   };
 
   return (
