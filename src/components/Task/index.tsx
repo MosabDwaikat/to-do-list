@@ -37,7 +37,6 @@ const Task = ({ task, deleteTask, editTask, completeTask }: TaskProps) => {
       [name]: value
     }));
   };
-  const x = 3;
 
   return (
     <div className={"task-item " + PriorityColorClass(task.priority) + (task.completed ? " completed" : "")}>
