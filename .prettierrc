@@ -1,7 +1,14 @@
 {
-  "printWidth": 80,   
-  "tabWidth": 2,
-  "singleQuote": true,
   "semi": true,
-  "trailingComma": "all"
+  "singleQuote": false,
+  "trailingComma": "none",
+  "overrides": [
+    {
+      "files": ["*.html", "*.js", "*.css", "*.ts", "*.tsx"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120
+      }
+    }
+  ]
 }

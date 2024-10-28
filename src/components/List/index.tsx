@@ -1,8 +1,8 @@
-import React from 'react';
-import './index.css';
-import Task from '../Task';
-import TaskType from '../../types/TaskType';
-import PriorityType from '../../types/PriorityType';
+import React from "react";
+import "./index.scss";
+import Task from "../Task";
+import TaskType from "../../types/TaskType";
+import PriorityType from "../../types/PriorityType";
 
 interface ListProps {
   tasks: TaskType[];
@@ -16,9 +16,7 @@ const List = ({ tasks, setTasks, filter }: ListProps) => {
   };
 
   const editTask = (updatedTask: TaskType) => {
-    const newTasks = tasks.map((task) =>
-      task.id === updatedTask.id ? updatedTask : task,
-    );
+    const newTasks = tasks.map((task) => (task.id === updatedTask.id ? updatedTask : task));
     setTasks(newTasks);
   };
 

@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import './index.css';
-import PriorityType from '../../types/PriorityType';
-import TaskType from '../../types/TaskType';
-import PriorityColorClass from '../../utils/PriorityColorClass';
+import React, { useState } from "react";
+import "./index.scss";
+import PriorityType from "../../types/PriorityType";
+import TaskType from "../../types/TaskType";
+import PriorityColorClass from "../../utils/PriorityColorClass";
 
 interface AddTaskProps {
   addTask: (task: TaskType) => void;
 }
 
 const AddTask = ({ addTask }: AddTaskProps) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [priority, setPriority] = useState(PriorityType.low);
   const [submitted, setSubmitted] = useState(false);
 
@@ -24,40 +24,31 @@ const AddTask = ({ addTask }: AddTaskProps) => {
       title: title,
       description: description,
       priority: priority,
-      completed: false,
+      completed: false
     };
     addTask(task);
-    setTitle('');
-    setDescription('');
+    setTitle("");
+    setDescription("");
     setPriority(PriorityType.low);
     setSubmitted(false);
   };
 
   return (
     <div className="add-task-panel">
-      <button
-        className="add-task-btn"
-        id="add-task-btn"
-        onClick={handleAddTask}
-      >
+      <button className="add-task-btn" id="add-task-btn" onClick={handleAddTask}>
         Add
       </button>
       <div className="add-task-info-panel">
         <div className="add-task-info-header-panel">
           <input
             type="text"
-            className={
-              'task-title' + (submitted && !title ? ' input-error' : '')
-            }
+            className={"task-title" + (submitted && !title ? " input-error" : "")}
             id="task-title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Task title"
           />
-          <div
-            className={'task-priority-panel ' + PriorityColorClass(priority)}
-            id="task-priority-panel"
-          >
+          <div className={"task-priority-panel " + PriorityColorClass(priority)} id="task-priority-panel">
             <label htmlFor="task-priority" className="task-priority-label">
               Priority:
             </label>
@@ -75,10 +66,7 @@ const AddTask = ({ addTask }: AddTaskProps) => {
         </div>
         <input
           type="text"
-          className={
-            'task-description' +
-            (submitted && !description ? ' input-error' : '')
-          }
+          className={"task-description" + (submitted && !description ? " input-error" : "")}
           id="task-description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}

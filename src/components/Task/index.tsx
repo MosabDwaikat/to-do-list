@@ -1,8 +1,8 @@
-import React, { ChangeEvent, useState } from 'react';
-import { completeIcon, deleteIcon, editIcon, incompleteIcon } from '../Icons';
-import TaskType from '../../types/TaskType';
-import PriorityColorClass from '../../utils/PriorityColorClass';
-
+import React, { ChangeEvent, useState } from "react";
+import { completeIcon, deleteIcon, editIcon, incompleteIcon } from "../Icons";
+import TaskType from "../../types/TaskType";
+import PriorityColorClass from "../../utils/PriorityColorClass";
+import "./index.scss";
 interface TaskProps {
   task: TaskType;
   deleteTask: () => void;
@@ -28,34 +28,21 @@ const Task = ({ task, deleteTask, editTask, completeTask }: TaskProps) => {
     setIsEditing(true);
   };
 
-  const handleValueChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
+  const handleValueChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const value = e.target.value;
     const name = e.target.name;
     setEditedTask((prevTask) => ({
       ...prevTask,
-      [name]: value,
+      [name]: value
     }));
   };
 
   return (
-    <div
-      className={
-        'task-item ' +
-        PriorityColorClass(task.priority) +
-        (task.completed ? ' completed' : '')
-      }
-    >
+    <div className={"task-item " + PriorityColorClass(task.priority) + (task.completed ? " completed" : "")}>
       <div className="task-body">
         <div className="task-info">
           {isEditing ? (
-            <input
-              className="task-title"
-              value={editedTask.title}
-              name="title"
-              onChange={handleValueChange}
-            />
+            <input className="task-title" value={editedTask.title} name="title" onChange={handleValueChange} />
           ) : (
             <h3>{task.title}</h3>
           )}
@@ -89,11 +76,7 @@ const Task = ({ task, deleteTask, editTask, completeTask }: TaskProps) => {
           </button>
         )}
         {isEditing ? (
-          <button
-            className="task-item-complete-btn"
-            name="saveEdit"
-            onClick={saveEditTask}
-          >
+          <button className="task-item-complete-btn" name="saveEdit" onClick={saveEditTask}>
             {completeIcon()}
           </button>
         ) : (
@@ -102,11 +85,7 @@ const Task = ({ task, deleteTask, editTask, completeTask }: TaskProps) => {
           </button>
         )}
         {isEditing ? (
-          <button
-            className="task-item-delete-btn"
-            name="cancelEdit"
-            onClick={cancelEditTask}
-          >
+          <button className="task-item-delete-btn" name="cancelEdit" onClick={cancelEditTask}>
             {incompleteIcon()}
           </button>
         ) : (

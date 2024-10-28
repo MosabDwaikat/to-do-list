@@ -1,4 +1,4 @@
-import PriorityType from './PriorityType';
+import PriorityType from "./PriorityType";
 
 type TaskType = {
   id: string;
