@@ -3,6 +3,7 @@ import { completeIcon, deleteIcon, editIcon, incompleteIcon } from "../Icons";
 import TaskType from "../../types/TaskType";
 import PriorityColorClass from "../../utils/PriorityColorClass";
 import "./index.scss";
+import PriorityType from "../../types/PriorityType";
 interface TaskProps {
   task: TaskType;
   deleteTask: () => void;
@@ -66,9 +67,9 @@ const Task = ({ task, deleteTask, editTask, completeTask }: TaskProps) => {
             name="priority"
             onChange={handleValueChange}
           >
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
+            <option value={PriorityType.low}>Low</option>
+            <option value={PriorityType.medium}>Medium</option>
+            <option value={PriorityType.high}>High</option>
           </select>
         ) : (
           <button className="task-item-complete-btn" onClick={completeTask}>
