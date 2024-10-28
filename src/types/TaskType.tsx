@@ -1,4 +1,4 @@
-import PriorityType from "./PriorityType";
+import PriorityType from './PriorityType';
 
 type TaskType = {
   id: string;
@@ -7,4 +7,5 @@ type TaskType = {
   priority: PriorityType;
   completed: boolean;
 };
+
 export default TaskType;

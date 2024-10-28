@@ -1,7 +1,7 @@
-import React, { ChangeEvent, useState } from "react";
-import { completeIcon, deleteIcon, editIcon, incompleteIcon } from "../Icons";
-import PriorityType from "../../types/PriorityType";
-import TaskType from "../../types/TaskType";
+import React, { ChangeEvent, useState } from 'react';
+import { completeIcon, deleteIcon, editIcon, incompleteIcon } from '../Icons';
+import TaskType from '../../types/TaskType';
+import PriorityColorClass from '../../utils/PriorityColorClass';
 
 interface TaskProps {
   task: TaskType;
@@ -13,19 +13,6 @@ interface TaskProps {
 const Task = ({ task, deleteTask, editTask, completeTask }: TaskProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTask, setEditedTask] = useState(task);
-
-  const priorityColor = () => {
-    switch (task.priority) {
-      case PriorityType.high:
-        return "bg-color-red";
-      case PriorityType.medium:
-        return "bg-color-yellow";
-      case PriorityType.low:
-        return "bg-color-green";
-      default:
-        return "";
-    }
-  };
 
   const cancelEditTask = () => {
     setIsEditing(false);
@@ -42,7 +29,7 @@ const Task = ({ task, deleteTask, editTask, completeTask }: TaskProps) => {
   };
 
   const handleValueChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const value = e.target.value;
     const name = e.target.name;
@@ -55,7 +42,9 @@ const Task = ({ task, deleteTask, editTask, completeTask }: TaskProps) => {
   return (
     <div
       className={
-        "task-item " + priorityColor() + (task.completed ? " completed" : "")
+        'task-item ' +
+        PriorityColorClass(task.priority) +
+        (task.completed ? ' completed' : '')
       }
     >
       <div className="task-body">

@@ -1,6 +1,6 @@
-import React from "react";
-import "./index.css";
-import PriorityType from "../../types/PriorityType";
+import React from 'react';
+import './index.css';
+import PriorityType from '../../types/PriorityType';
 
 interface HeaderProps {
   setFilter: (filter: PriorityType) => void;
