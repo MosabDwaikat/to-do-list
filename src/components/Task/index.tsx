@@ -4,16 +4,18 @@ import TaskType from "../../types/TaskType";
 import PriorityColorClass from "../../utils/PriorityColorClass";
 import "./index.scss";
 import PriorityType from "../../types/PriorityType";
+import { completeTask, deleteTask, editTask } from "../../app/tasks/tasksSlice";
+import { AppDispatch } from "../../app/store";
+import { useAppDispatch } from "../../app/hooks";
+
 interface TaskProps {
   task: TaskType;
-  deleteTask: () => void;
-  editTask: (updatedTask: TaskType) => void;
-  completeTask: () => void;
 }
 
-const Task = ({ task, deleteTask, editTask, completeTask }: TaskProps) => {
+const Task = ({ task }: TaskProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTask, setEditedTask] = useState(task);
+  const dispatch: AppDispatch = useAppDispatch();
 
   const cancelEditTask = () => {
     setIsEditing(false);
@@ -21,7 +23,7 @@ const Task = ({ task, deleteTask, editTask, completeTask }: TaskProps) => {
   };
 
   const saveEditTask = () => {
-    editTask(editedTask);
+    dispatch(editTask(editedTask));
     setIsEditing(false);
   };
 
@@ -72,7 +74,7 @@ const Task = ({ task, deleteTask, editTask, completeTask }: TaskProps) => {
             <option value={PriorityType.high}>High</option>
           </select>
         ) : (
-          <button className="task-item-complete-btn" onClick={completeTask}>
+          <button className="task-item-complete-btn" onClick={() => dispatch(completeTask(task.id))}>
             {task.completed ? incompleteIcon() : completeIcon()}
           </button>
         )}
@@ -90,7 +92,7 @@ const Task = ({ task, deleteTask, editTask, completeTask }: TaskProps) => {
             {incompleteIcon()}
           </button>
         ) : (
-          <button className="task-item-delete-btn" onClick={deleteTask}>
+          <button className="task-item-delete-btn" onClick={() => dispatch(deleteTask(task.id))}>
             {deleteIcon()}
           </button>
         )}

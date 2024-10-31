@@ -3,16 +3,17 @@ import "./index.scss";
 import PriorityType from "../../types/PriorityType";
 import TaskType from "../../types/TaskType";
 import PriorityColorClass from "../../utils/PriorityColorClass";
+import { useAppDispatch } from "../../app/hooks";
+import { AppDispatch } from "../../app/store";
+import { addTask } from "../../app/tasks/tasksSlice";
 
-interface AddTaskProps {
-  addTask: (task: TaskType) => void;
-}
-
-const AddTask = ({ addTask }: AddTaskProps) => {
+const AddTask = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState(PriorityType.low);
   const [submitted, setSubmitted] = useState(false);
+
+  const dispatch: AppDispatch = useAppDispatch();
 
   const handleAddTask = () => {
     setSubmitted(true);
@@ -26,7 +27,7 @@ const AddTask = ({ addTask }: AddTaskProps) => {
       priority: priority,
       completed: false
     };
-    addTask(task);
+    dispatch(addTask(task));
     setTitle("");
     setDescription("");
     setPriority(PriorityType.low);
