@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import PriorityType from "../../types/PriorityType";
+import { RootState } from "..";
 
 interface FilterState {
   priority: PriorityType;
@@ -18,5 +19,6 @@ const filterSlice = createSlice({
     }
   }
 });
+export const selectPriority = (state: RootState) => state.filter.priority;
 export const { setFilter } = filterSlice.actions;
 export default filterSlice.reducer;

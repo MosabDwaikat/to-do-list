@@ -1,10 +1,10 @@
 import { configureStore, createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit";
 import FilterReducer from "./filter/filterSlice";
-import TasksReducer, { addTask, completeTask, deleteTask, editTask, setTasks } from "./tasks/tasksSlice";
+import TasksReducer, { addTask, completeTask, deleteTask, editTask } from "./tasks/tasksSlice";
 
 const updateStorageMiddleware = createListenerMiddleware();
 updateStorageMiddleware.startListening({
-  matcher: isAnyOf(addTask, completeTask, deleteTask, editTask, setTasks),
+  matcher: isAnyOf(addTask, completeTask, deleteTask, editTask),
   effect: (_, listener_API) => {
     const state = listener_API.getState() as RootState;
     const tasks = state.tasksList.tasks;

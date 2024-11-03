@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import TaskType from "../../types/TaskType";
+import { RootState } from "..";
 
 interface TasksState {
   tasks: TaskType[];
@@ -15,9 +16,6 @@ const tasksSlice = createSlice({
   name: "tasksList",
   initialState,
   reducers: {
-    setTasks: (state, action: PayloadAction<TaskType[]>) => {
-      state.tasks = action.payload;
-    },
     addTask: (state, action: PayloadAction<TaskType>) => {
       state.tasks = [...state.tasks, action.payload];
     },
@@ -37,5 +35,6 @@ const tasksSlice = createSlice({
     }
   }
 });
-export const { setTasks, addTask, editTask, deleteTask, completeTask } = tasksSlice.actions;
+export const tasksList = (state: RootState) => state.tasksList.tasks;
+export const { addTask, editTask, deleteTask, completeTask } = tasksSlice.actions;
 export default tasksSlice.reducer;
