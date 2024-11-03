@@ -2,7 +2,7 @@ import React from "react";
 import "./index.scss";
 import Task from "../Task";
 import PriorityType from "../../types/PriorityType";
-import { useAppSelector } from "../../app/hooks";
+import { useAppSelector } from "../../store/hooks";
 
 const List = () => {
   const filter = useAppSelector((state) => state.filter);

@@ -4,9 +4,9 @@ import TaskType from "../../types/TaskType";
 import PriorityColorClass from "../../utils/PriorityColorClass";
 import "./index.scss";
 import PriorityType from "../../types/PriorityType";
-import { completeTask, deleteTask, editTask } from "../../app/tasks/tasksSlice";
-import { AppDispatch } from "../../app/store";
-import { useAppDispatch } from "../../app/hooks";
+import { completeTask, deleteTask, editTask } from "../../store/tasks/tasksSlice";
+import { AppDispatch } from "../../store";
+import { useAppDispatch } from "../../store/hooks";
 
 interface TaskProps {
   task: TaskType;

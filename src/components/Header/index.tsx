@@ -1,9 +1,9 @@
 import React, { ChangeEvent } from "react";
 import "./index.scss";
 import PriorityType from "../../types/PriorityType";
-import { AppDispatch } from "../../app/store";
-import { useAppDispatch } from "../../app/hooks";
-import { setFilter } from "../../app/filter/filterSlice";
+import { AppDispatch } from "../../store";
+import { useAppDispatch } from "../../store/hooks";
+import { setFilter } from "../../store/filter/filterSlice";
 
 const Header = () => {
   const dispatch: AppDispatch = useAppDispatch();

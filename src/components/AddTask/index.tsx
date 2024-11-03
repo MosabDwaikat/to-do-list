@@ -3,9 +3,9 @@ import "./index.scss";
 import PriorityType from "../../types/PriorityType";
 import TaskType from "../../types/TaskType";
 import PriorityColorClass from "../../utils/PriorityColorClass";
-import { useAppDispatch } from "../../app/hooks";
-import { AppDispatch } from "../../app/store";
-import { addTask } from "../../app/tasks/tasksSlice";
+import { useAppDispatch } from "../../store/hooks";
+import { AppDispatch } from "../../store";
+import { addTask } from "../../store/tasks/tasksSlice";
 
 const AddTask = () => {
   const [title, setTitle] = useState("");
